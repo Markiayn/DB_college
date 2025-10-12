@@ -4,6 +4,8 @@ import ua.markiyan.sonara.dto.response.ArtistResponse;
 import ua.markiyan.sonara.dto.request.ArtistRequest;
 import ua.markiyan.sonara.entity.Artist;
 
+import java.util.List;
+
 public final class ArtistMapper {
     private ArtistMapper() {}
 
@@ -17,13 +19,19 @@ public final class ArtistMapper {
     }
 
     public static ArtistResponse toResponse(Artist e) {
+        List<ua.markiyan.sonara.dto.response.AlbumResponse> albums =
+                e.getAlbums() == null ? List.of()
+                        : e.getAlbums().stream()
+                        .map(AlbumMapper::toResponse)
+                        .toList();
+
         return new ArtistResponse(
                 e.getId(),
                 e.getName(),
                 e.getCountry(),
                 e.getStartYear(),
-                e.getBio()
-//TODO                e.getAlbums()
+                e.getBio(),
+                albums
         );
     }
 }
