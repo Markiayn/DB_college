@@ -1,0 +1,62 @@
+[
+  {
+    "email": "olena.kovalenko89@gmail.com",
+    "password": "Olena2025!",
+    "name": "Olena Kovalenko",
+    "country": "UA"
+  },
+  {
+    "email": "petro.ivanchuk@outlook.com",
+    "password": "Petro!321",
+    "name": "Petro Ivanchuk",
+    "country": "PL"
+  },
+  {
+    "email": "sofia.martinez@yahoo.com",
+    "password": "Sofia#77",
+    "name": "Sofia Martinez",
+    "country": "ES"
+  },
+  {
+    "email": "andriy.bereznyak@mail.com",
+    "password": "Andriy_0909",
+    "name": "Andriy Bereznyak",
+    "country": "UA"
+  },
+  {
+    "email": "marta.nowak@protonmail.com",
+    "password": "MartaPW!45",
+    "name": "Marta Nowak",
+    "country": "PL"
+  },
+  {
+    "email": "liam.johnson@gmail.com",
+    "password": "LiamSecure2025",
+    "name": "Liam Johnson",
+    "country": "US"
+  },
+  {
+    "email": "emma.thompson@outlook.com",
+    "password": "EmmaT#88",
+    "name": "Emma Thompson",
+    "country": "GB"
+  },
+  {
+    "email": "noah.schneider@hotmail.com",
+    "password": "Noah!Sch2025",
+    "name": "Noah Schneider",
+    "country": "DE"
+  },
+  {
+    "email": "isabella.rossi@gmail.com",
+    "password": "Isa_Rossi7",
+    "name": "Isabella Rossi",
+    "country": "IT"
+  },
+  {
+    "email": "carlos.santos@icloud.com",
+    "password": "Carlos#2025",
+    "name": "Carlos Santos",
+    "country": "BR"
+  }
+]
