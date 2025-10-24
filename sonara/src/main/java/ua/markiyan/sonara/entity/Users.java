@@ -14,10 +14,10 @@ import lombok.*;
 
 @Entity
 @Table(
-        name = "User",
+        name = "Users",
         uniqueConstraints = @UniqueConstraint(name = "uq_user_email", columnNames = "email")
 )
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,20 +42,20 @@ public class User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Status status = Status.ACTIVE;
+    private Status status = Status.active;
 
     // Relations
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Playlist> playlists;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
 
     // внутрішній enum для статусів
     public enum Status {
-        ACTIVE, INACTIVE, SUSPENDED, DELETED, BANNED
+        active, inactive, suspend, deleted, banned
     }
 }

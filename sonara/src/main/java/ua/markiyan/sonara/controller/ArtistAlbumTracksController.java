@@ -26,7 +26,7 @@ public class ArtistAlbumTracksController {
     public TrackResponse getOne(@PathVariable Long artistId,
                                 @PathVariable Long albumId,
                                 @PathVariable Long trackId) {
-        return service.getOne(artistId, albumId, trackId);
+        return service.getOneByAlbumAndArtist(artistId, albumId, trackId);
     }
 
 // заміни TrackRequest на TrackCreateRequest

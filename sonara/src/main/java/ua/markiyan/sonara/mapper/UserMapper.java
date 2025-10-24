@@ -12,7 +12,7 @@ public final class UserMapper {
                 .email(dto.email())
                 .name(dto.name())
                 .country(dto.country())
-                .status(Users.Status.ACTIVE) // default
+                .status(Users.Status.active) // дефолт
                 .build();
     }
 
@@ -27,3 +27,4 @@ public final class UserMapper {
         );
     }
 }
+

@@ -24,7 +24,7 @@ public class Subscription {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users users;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)

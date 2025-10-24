@@ -23,6 +23,7 @@ import ua.markiyan.sonara.service.TrackService;
 import ua.markiyan.sonara.dto.request.ArtistAlbumTrackRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -118,7 +119,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     @Transactional(readOnly = true)
-    public TrackResponse getOne(Long artistId, Long albumId, Long trackId) {
+    public TrackResponse getOneByAlbumAndArtist(Long artistId, Long albumId, Long trackId) {
         Album album = albumRepo.findById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException("Album not found: " + albumId));
         if (!album.getArtist().getId().equals(artistId)) {
@@ -212,6 +213,18 @@ public class TrackServiceImpl implements TrackService {
                 .stream()
                 .map(TrackMapper::toResponse)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TrackResponse getOneByAlbum(Long albumId, Long trackId){
+        Album album = albumRepo.findById(albumId)
+                .orElseThrow(() -> new EntityNotFoundException("Album not found: " + albumId));
+
+        Track t = trackRepo.findByIdAndAlbum_Id(trackId, albumId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Track %d not found in album %d".formatted(trackId, albumId)));
+        return TrackMapper.toResponse(t);
     }
 
 
