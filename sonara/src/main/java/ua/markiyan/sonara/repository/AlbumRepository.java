@@ -1,5 +1,7 @@
 package ua.markiyan.sonara.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ua.markiyan.sonara.entity.Album;
@@ -18,4 +20,18 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     // Коли треба одразу з артистом (наприклад, щоб зчитати artistId без додаткового запиту)
     @EntityGraph(attributePaths = "artist")
     Optional<Album> findWithArtistById(Long id);
+
+    @EntityGraph(attributePaths = "artist")
+    Optional<Album> findByIdAndArtist_Id(Long albumId, Long artistId);
+
+
+    Page<Album> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+
+    Page<Album> findByReleaseDate(java.time.LocalDate releaseDate, Pageable pageable);
+
+
+    Page<Album> findByTitleContainingIgnoreCaseAndReleaseDate(String title,
+                                                              java.time.LocalDate releaseDate,
+                                                              Pageable pageable);
 }

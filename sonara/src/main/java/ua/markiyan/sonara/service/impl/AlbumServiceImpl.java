@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.markiyan.sonara.dto.request.AlbumRequest;
+import ua.markiyan.sonara.dto.request.ArtistAlbumRequest;
 import ua.markiyan.sonara.dto.response.AlbumResponse;
 import ua.markiyan.sonara.entity.Album;
 import ua.markiyan.sonara.entity.Artist;
@@ -56,4 +57,57 @@ public class AlbumServiceImpl implements AlbumService {
                 .map(AlbumMapper::toResponse)
                 .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AlbumResponse getUnderArtist(Long artistId, Long albumId) {
+        Album album = albumRepo.findByIdAndArtist_Id(albumId, artistId)
+                .orElseThrow(() -> new NotFoundException(
+                        "Album %d not found for artist %d".formatted(albumId, artistId)));
+        return AlbumMapper.toResponse(album);
+    }
+
+    @Override
+    @Transactional
+    public AlbumResponse createUnderArtist(Long artistId, ArtistAlbumRequest req) {
+        Artist artist = artistRepo.findById(artistId)
+                .orElseThrow(() -> new NotFoundException("Artist %d not found".formatted(artistId)));
+
+        if (albumRepo.existsByTitleIgnoreCaseAndArtist_Id(req.title(), artistId)) {
+            throw new IllegalArgumentException("Album with the same title already exists for this artist");
+        }
+
+        Album album = AlbumMapper.toEntity(req, artist);
+        Album saved = albumRepo.save(album);
+        return AlbumMapper.toResponse(saved);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<AlbumResponse> search(String title,
+                                                                      java.time.LocalDate releaseDate,
+                                                                      org.springframework.data.domain.Pageable pageable) {
+        boolean hasTitle = title != null && !title.isBlank();
+        boolean hasDate  = releaseDate != null;
+
+        if (hasTitle && hasDate) {
+            return albumRepo
+                    .findByTitleContainingIgnoreCaseAndReleaseDate(title, releaseDate, pageable)
+                    .map(AlbumMapper::toResponse);
+        } else if (hasTitle) {
+            return albumRepo
+                    .findByTitleContainingIgnoreCase(title, pageable)
+                    .map(AlbumMapper::toResponse);
+        } else if (hasDate) {
+            return albumRepo
+                    .findByReleaseDate(releaseDate, pageable)
+                    .map(AlbumMapper::toResponse);
+        } else {
+            return albumRepo
+                    .findAll(pageable)
+                    .map(AlbumMapper::toResponse);
+        }
+    }
+
+
 }
