@@ -25,7 +25,7 @@ public class Playlist {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users users;
 
     @Column(nullable = false, length = 255)
     private String title;

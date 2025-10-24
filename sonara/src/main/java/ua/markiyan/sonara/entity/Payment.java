@@ -29,7 +29,7 @@ public class Payment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users users;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subscription_id", nullable = false)
@@ -48,21 +48,21 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition =
             "ENUM('credit_card','paypal','apple_pay','google_pay','crypto')")
-    private PaymentMethod method = PaymentMethod.CREDIT_CARD;
+    private PaymentMethod method = PaymentMethod.credit_card;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition =
             "ENUM('pending','completed','failed','declined','refunded')")
-    private PaymentStatus status = PaymentStatus.PRNDING;
+    private PaymentStatus status = PaymentStatus.pending;
 
 
     public enum PaymentStatus {
-        PRNDING, COMPLETED, FAILED, DECLINED, REFUNDED
+        pending,completed,failed,declined,refunded
     }
 
     public enum PaymentMethod {
-        CREDIT_CARD, PAYPAL, APPLE_PAY, GOOGLE_PAY, CRYPTO
+        credit_card,paypal,apple_pay,google_pay,crypto
     }
 }
 

@@ -30,8 +30,7 @@ public final class ArtistMapper {
                 e.getName(),
                 e.getCountry(),
                 e.getStartYear(),
-                e.getBio(),
-                albums
+                e.getBio()
         );
     }
 }

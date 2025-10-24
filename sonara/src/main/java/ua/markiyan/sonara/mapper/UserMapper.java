@@ -2,21 +2,21 @@ package ua.markiyan.sonara.mapper;
 
 import ua.markiyan.sonara.dto.request.UserRequest;
 import ua.markiyan.sonara.dto.response.UserResponse;
-import ua.markiyan.sonara.entity.User;
+import ua.markiyan.sonara.entity.Users;
 
 public final class UserMapper {
     private UserMapper() {}
 
-    public static User toEntity(UserRequest dto) {
-        return User.builder()
+    public static Users toEntity(UserRequest dto) {
+        return Users.builder()
                 .email(dto.email())
                 .name(dto.name())
                 .country(dto.country())
-                .status(User.Status.ACTIVE) // дефолт
+                .status(Users.Status.active) // дефолт
                 .build();
     }
 
-    public static UserResponse toResponse(User e) {
+    public static UserResponse toResponse(Users e) {
         return new UserResponse(
                 e.getId(),
                 e.getEmail(),

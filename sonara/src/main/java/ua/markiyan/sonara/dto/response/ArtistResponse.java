@@ -7,6 +7,5 @@ public record ArtistResponse (
         String name,
         String country,
         Integer startYear,
-        String bio,
-        List<AlbumResponse> albums
+        String bio
 ){}
