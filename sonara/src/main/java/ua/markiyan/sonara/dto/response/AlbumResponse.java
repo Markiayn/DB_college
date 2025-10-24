@@ -8,5 +8,4 @@ public record AlbumResponse(
         LocalDate releaseDate,
         String coverUrl,
         Long artistId
-// TODO:       Тут має ще бути Tracks
 ) {}

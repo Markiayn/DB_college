@@ -58,10 +58,4 @@ public class User {
     public enum Status {
         ACTIVE, INACTIVE, SUSPENDED, DELETED, BANNED
     }
-
-    // автоматичне виставлення created_at перед вставкою
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
 }
