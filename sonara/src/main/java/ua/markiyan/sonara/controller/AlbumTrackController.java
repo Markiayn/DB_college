@@ -39,12 +39,4 @@ public class AlbumTrackController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(trackService.create(albumId, req)); // <-- передаємо albumId із path
     }
-
-    @GetMapping("/{trackiId}")
-    public ResponseEntity<TrackResponse> get(@PathVariable Long albumId,
-                                             @PathVariable Long trackiId) {
-        TrackResponse dto = trackService.getOneByAlbum(albumId, trackiId);
-
-        return ResponseEntity.ok(dto);
-    }
 }

@@ -18,9 +18,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @DataJpaTest
 @ActiveProfiles("test")
+// якщо на H2: 
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
+// якщо на MySQL-тестБД: заміни на Replace.NONE і пропиши проперті БД у application-test.properties
 class AlbumRepositoryTest {
 
     @Autowired private AlbumRepository albumRepository;

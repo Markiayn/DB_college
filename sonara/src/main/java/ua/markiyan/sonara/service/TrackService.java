@@ -18,11 +18,8 @@ public interface TrackService {
     TrackResponse createUnderAlbum(Long artistId, Long albumId, ArtistAlbumTrackRequest req);
     List<TrackResponse> listByAlbumWithArtsit(Long artistId, Long albumId);
     java.util.List<TrackResponse> listByAlbum(Long albumId);
-    TrackResponse getOneByAlbumAndArtist(Long artistId, Long albumId, Long trackId);
+    TrackResponse getOne(Long artistId, Long albumId, Long trackId);
 
     Page<TrackResponse> search(String title, Integer durationSec, Boolean explicitFlag, Pageable pageable);
     Page<TrackResponse> searchInAlbum(Long albumId, String title, Integer durationSec, Boolean explicitFlag, Pageable pageable);
-
-    // ДЛЯ /api/albums/{albumId}/tracks...
-    TrackResponse getOneByAlbum(Long albumId, Long trackId);
 }

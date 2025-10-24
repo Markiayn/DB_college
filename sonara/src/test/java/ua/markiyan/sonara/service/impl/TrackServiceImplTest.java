@@ -1,4 +1,4 @@
-package ua.markiyan.sonara.controller;
+package ua.markiyan.sonara.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,18 +7,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ua.markiyan.sonara.SonaraSpotifyCloneApplication;
 
-@SpringBootTest(classes = SonaraSpotifyCloneApplication.class)
+@SpringBootTest
 @AutoConfigureMockMvc
-public class AlbumControllerTest {
+public class TrackServiceImplTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void testAlbumControllerEndpoint() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/albums"))
+    public void testGreetEndpoint() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/greet"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

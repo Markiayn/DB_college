@@ -3,10 +3,8 @@ package ua.markiyan.sonara.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 
 @Getter
 @Setter
@@ -16,10 +14,10 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(
-        name = "Users",
+        name = "User",
         uniqueConstraints = @UniqueConstraint(name = "uq_user_email", columnNames = "email")
 )
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +36,7 @@ public class Users {
     private String country;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime createdAt;
 
     @Builder.Default
@@ -47,18 +45,17 @@ public class Users {
     private Status status = Status.ACTIVE;
 
     // Relations
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Playlist> playlists;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
 
     // внутрішній enum для статусів
     public enum Status {
         ACTIVE, INACTIVE, SUSPENDED, DELETED, BANNED
     }
-
 }

@@ -29,7 +29,7 @@ public class Payment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users users;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subscription_id", nullable = false)
@@ -41,26 +41,28 @@ public class Payment {
     @Column(nullable = false, length = 3)
     private String currency;
 
-    // Use default TIMESTAMP mapping for LocalDateTime
-    @Column(name = "paid_at")
+    @Column(name = "paid_at", columnDefinition = "DATETIME")
     private LocalDateTime paidAt;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private PaymentMethod method = PaymentMethod.CREDIT_CARD;
+    @Column(nullable = false, columnDefinition =
+            "ENUM('credit_card','paypal','apple_pay','google_pay','crypto')")
+    private PaymentMethod method = PaymentMethod.credit_card;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private PaymentStatus status = PaymentStatus.PENDING;
+    @Column(nullable = false, columnDefinition =
+            "ENUM('pending','completed','failed','declined','refunded')")
+    private PaymentStatus status = PaymentStatus.pending;
 
 
     public enum PaymentStatus {
-        PENDING, COMPLETED, FAILED, DECLINED, REFUNDED
+        pending,completed,failed,declined,refunded
     }
 
     public enum PaymentMethod {
-        CREDIT_CARD, PAYPAL, APPLE_PAY, GOOGLE_PAY, CRYPTO
+        credit_card,paypal,apple_pay,google_pay,crypto
     }
 }
+
