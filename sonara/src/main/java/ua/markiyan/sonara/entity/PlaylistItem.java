@@ -38,7 +38,6 @@ public class PlaylistItem {
     private Integer position;
 
     @CreationTimestamp
-    @Column(name = "added_at", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "added_at", nullable = false)
     private LocalDateTime addedAt;
 }
-

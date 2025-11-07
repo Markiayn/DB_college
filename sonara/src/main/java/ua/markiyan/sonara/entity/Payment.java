@@ -41,28 +41,26 @@ public class Payment {
     @Column(nullable = false, length = 3)
     private String currency;
 
-    @Column(name = "paid_at", columnDefinition = "DATETIME")
+    // Use default TIMESTAMP mapping for LocalDateTime
+    @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition =
-            "ENUM('credit_card','paypal','apple_pay','google_pay','crypto')")
-    private PaymentMethod method = PaymentMethod.credit_card;
+    @Column(nullable = false, length = 20)
+    private PaymentMethod method = PaymentMethod.CREDIT_CARD;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition =
-            "ENUM('pending','completed','failed','declined','refunded')")
-    private PaymentStatus status = PaymentStatus.pending;
+    @Column(nullable = false, length = 20)
+    private PaymentStatus status = PaymentStatus.PENDING;
 
 
     public enum PaymentStatus {
-        pending,completed,failed,declined,refunded
+        PENDING, COMPLETED, FAILED, DECLINED, REFUNDED
     }
 
     public enum PaymentMethod {
-        credit_card,paypal,apple_pay,google_pay,crypto
+        CREDIT_CARD, PAYPAL, APPLE_PAY, GOOGLE_PAY, CRYPTO
     }
 }
-

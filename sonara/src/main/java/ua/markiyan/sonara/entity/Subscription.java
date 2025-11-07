@@ -28,26 +28,25 @@ public class Subscription {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "plan_code", nullable = false, columnDefinition = "ENUM('free','premium','family','student')")
-    private PlanCode planCode = PlanCode.free;
+    @Column(name = "plan_code", nullable = false, length = 20)
+    private PlanCode planCode = PlanCode.FREE;
 
     @CreationTimestamp
-    @Column(name = "started_at", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "started_at", nullable = false)
     private LocalDateTime startedAt;
 
-    @Column(name = "ends_at", columnDefinition = "DATETIME")
+    @Column(name = "ends_at")
     private LocalDateTime endsAt;
 
     public enum PlanCode {
-       free,premium,family,student
+       FREE, PREMIUM, FAMILY, STUDENT
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "ENUM('trial','active','expired','canceled','pending','suspended')")
-    private SubscriptionStatus status = SubscriptionStatus.trial;
+    @Column(nullable = false, length = 20)
+    private SubscriptionStatus status = SubscriptionStatus.TRIAL;
 
     public enum SubscriptionStatus {
-        trial,active,expired,canceled,pending,suspended
+        TRIAL, ACTIVE, EXPIRED, CANCELED, PENDING, SUSPENDED
     }
 }
-

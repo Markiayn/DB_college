@@ -36,13 +36,13 @@ public class Users {
     private String country;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Status status = Status.active;
+    private Status status = Status.ACTIVE;
 
     // Relations
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -56,6 +56,6 @@ public class Users {
 
     // внутрішній enum для статусів
     public enum Status {
-        active, inactive, suspend, deleted, banned
+        ACTIVE, INACTIVE, SUSPENDED, DELETED, BANNED
     }
 }
