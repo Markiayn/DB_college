@@ -16,7 +16,7 @@ public record SecurityUser(Long id, String email, String password, Users.Status 
     @Override public String getPassword() { return password; }
 
     @Override public boolean isEnabled() { return status == Users.Status.ACTIVE; }
-    @Override public boolean isAccountNonLocked() { return status != Users.Status.BANNED && status != Users.Status.SUSPENDED; }
+    @Override public boolean isAccountNonLocked() { return status != Users.Status.BANNED && status != Users.Status.SUSPEND; }
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
 

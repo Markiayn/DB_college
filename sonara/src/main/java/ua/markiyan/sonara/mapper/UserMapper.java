@@ -12,7 +12,7 @@ public final class UserMapper {
                 .email(dto.email())
                 .name(dto.name())
                 .country(dto.country())
-                .status(Users.Status.active) // дефолт
+                .status(Users.Status.ACTIVE) // дефолт
                 .build();
     }
 
