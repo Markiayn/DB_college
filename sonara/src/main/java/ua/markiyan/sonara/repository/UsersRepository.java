@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ua.markiyan.sonara.entity.Users;
 
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByNameIgnoreCase(String name);
+
+    Optional<Users> findByEmail(String email);
+    boolean existsByEmail(String email);
 
     boolean existsByNameIgnoreCase(String name);
 

@@ -11,7 +11,7 @@ import ua.markiyan.sonara.dto.response.UserResponse;
 import ua.markiyan.sonara.entity.Users;
 import ua.markiyan.sonara.exception.NotFoundException;
 import ua.markiyan.sonara.mapper.UserMapper;
-import ua.markiyan.sonara.repository.UserRepository;
+import ua.markiyan.sonara.repository.UsersRepository;
 import ua.markiyan.sonara.service.UserService;
 
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repo;
+    private final UsersRepository repo;
     private final PasswordEncoder encoder;
 
     @Override
