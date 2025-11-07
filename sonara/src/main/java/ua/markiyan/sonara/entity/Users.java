@@ -3,8 +3,10 @@ package ua.markiyan.sonara.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 @Getter
 @Setter
@@ -58,4 +60,5 @@ public class Users {
     public enum Status {
         active, inactive, suspend, deleted, banned
     }
+
 }
