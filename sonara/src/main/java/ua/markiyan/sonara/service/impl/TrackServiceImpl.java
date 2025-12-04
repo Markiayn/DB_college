@@ -9,18 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.markiyan.sonara.dto.request.AlbumTrackRequest;
 import ua.markiyan.sonara.dto.request.TrackRequest;
-import ua.markiyan.sonara.dto.response.AlbumResponse;
 import ua.markiyan.sonara.dto.response.TrackResponse;
 import ua.markiyan.sonara.entity.Album;
 import ua.markiyan.sonara.entity.Artist;
 import ua.markiyan.sonara.entity.Track;
-import ua.markiyan.sonara.mapper.AlbumMapper;
 import ua.markiyan.sonara.mapper.TrackMapper;
 import ua.markiyan.sonara.repository.AlbumRepository;
 import ua.markiyan.sonara.repository.ArtistRepository;
 import ua.markiyan.sonara.repository.TrackRepository;
 import ua.markiyan.sonara.service.TrackService;
 import ua.markiyan.sonara.dto.request.ArtistAlbumTrackRequest;
+import ua.markiyan.sonara.dto.request.TrackUpdateRequest;
 
 import java.util.List;
 
@@ -204,7 +203,6 @@ public class TrackServiceImpl implements TrackService {
 
 
 
-
     @Override
     @Transactional(readOnly = true)
     public java.util.List<TrackResponse> listByAlbum(Long albumId) {
@@ -223,6 +221,27 @@ public class TrackServiceImpl implements TrackService {
         }
         return "https://cloudflare.com/" + audioKey + ".mp3";
     }
+
+    @Override
+    @Transactional
+    public TrackResponse update(Long id, TrackUpdateRequest req) {
+        Track t = trackRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Track not found: " + id));
+        if (req.title() != null && !req.title().isBlank()) t.setTitle(req.title());
+        if (req.durationSec() != null) t.setDurationSec(req.durationSec());
+        if (req.explicitFlag() != null) t.setExplicitFlag(req.explicitFlag());
+        if (req.audioKey() != null) {
+            t.setAudioKey(req.audioKey());
+            t.setAudioUrl(generateAudioUrl(req.audioKey()));
+        }
+        if (req.audioUrl() != null) t.setAudioUrl(req.audioUrl());
+        Track saved = trackRepo.save(t);
+        return TrackMapper.toResponse(saved);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        if (!trackRepo.existsById(id)) throw new EntityNotFoundException("Track not found: " + id);
+        trackRepo.deleteById(id);
+    }
 }
-
-

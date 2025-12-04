@@ -6,6 +6,7 @@ import ua.markiyan.sonara.dto.request.AlbumTrackRequest;
 import ua.markiyan.sonara.dto.request.TrackRequest;
 import ua.markiyan.sonara.dto.response.TrackResponse;
 import ua.markiyan.sonara.dto.request.ArtistAlbumTrackRequest;
+import ua.markiyan.sonara.dto.request.TrackUpdateRequest;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface TrackService {
 
     Page<TrackResponse> search(String title, Integer durationSec, Boolean explicitFlag, Pageable pageable);
     Page<TrackResponse> searchInAlbum(Long albumId, String title, Integer durationSec, Boolean explicitFlag, Pageable pageable);
+
+    // updates
+    TrackResponse update(Long id, TrackUpdateRequest req);
+    void delete(Long id);
 }

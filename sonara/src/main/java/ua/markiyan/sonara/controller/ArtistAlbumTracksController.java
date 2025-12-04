@@ -39,4 +39,23 @@ public class ArtistAlbumTracksController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @PatchMapping("/{trackId}")
+    public TrackResponse patch(@PathVariable Long artistId,
+                               @PathVariable Long albumId,
+                               @PathVariable Long trackId,
+                               @RequestBody ua.markiyan.sonara.dto.request.TrackUpdateRequest req) {
+        // ensure album belongs to artist
+        service.getOne(artistId, albumId, trackId);
+        return service.update(trackId, req);
+    }
+
+    @DeleteMapping("/{trackId}")
+    public ResponseEntity<?> delete(@PathVariable Long artistId,
+                                    @PathVariable Long albumId,
+                                    @PathVariable Long trackId) {
+        // verify ownership
+        service.getOne(artistId, albumId, trackId);
+        service.delete(trackId);
+        return ResponseEntity.noContent().build();
+    }
 }

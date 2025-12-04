@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import ua.markiyan.sonara.dto.request.AlbumRequest;
 import ua.markiyan.sonara.dto.response.AlbumResponse;
 
-import ua.markiyan.sonara.dto.response.ArtistResponse;
 import ua.markiyan.sonara.service.AlbumService;
 
 import java.time.LocalDate;
@@ -39,5 +38,16 @@ public class AlbumController {
             Pageable pageable // автоматично підхопить page, size, sort
     ) {
         return albumService.search(title, releaseDate, pageable);
+    }
+
+    @PatchMapping("/{id}")
+    public AlbumResponse patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.AlbumUpdateRequest req) {
+        return albumService.update(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        albumService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -7,9 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.markiyan.sonara.dto.request.AlbumRequest;
 import ua.markiyan.sonara.dto.request.AlbumTrackRequest;
-import ua.markiyan.sonara.dto.response.AlbumResponse;
 import ua.markiyan.sonara.dto.response.TrackResponse;
 import ua.markiyan.sonara.service.TrackService;
 
@@ -38,5 +36,21 @@ public class AlbumTrackController {
                                                 @Valid @RequestBody AlbumTrackRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(trackService.create(albumId, req)); // <-- передаємо albumId із path
+    }
+
+    @PatchMapping("/{trackId}")
+    public TrackResponse patch(@PathVariable Long albumId, @PathVariable Long trackId,
+                               @RequestBody ua.markiyan.sonara.dto.request.TrackUpdateRequest req) {
+        // ensure track belongs to album
+        trackService.get(trackId);
+        // service.update will perform the update
+        return trackService.update(trackId, req);
+    }
+
+    @DeleteMapping("/{trackId}")
+    public ResponseEntity<?> delete(@PathVariable Long albumId, @PathVariable Long trackId) {
+        // optionally verify track in album
+        trackService.delete(trackId);
+        return ResponseEntity.noContent().build();
     }
 }

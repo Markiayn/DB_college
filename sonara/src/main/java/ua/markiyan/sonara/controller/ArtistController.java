@@ -36,5 +36,15 @@ public class ArtistController {
     ) {
         return artistService.search(name, country, pageable);
     }
-}
 
+    @PatchMapping("/{id}")
+    public ArtistResponse patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.ArtistUpdateRequest req) {
+        return artistService.update(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        artistService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.markiyan.sonara.dto.request.AlbumRequest;
 import ua.markiyan.sonara.dto.request.ArtistAlbumRequest;
+import ua.markiyan.sonara.dto.request.AlbumUpdateRequest;
 import ua.markiyan.sonara.dto.response.AlbumResponse;
 import ua.markiyan.sonara.entity.Album;
 import ua.markiyan.sonara.entity.Artist;
@@ -107,6 +108,27 @@ public class AlbumServiceImpl implements AlbumService {
                     .findAll(pageable)
                     .map(AlbumMapper::toResponse);
         }
+    }
+
+    @Override
+    @Transactional
+    public AlbumResponse update(Long id, AlbumUpdateRequest req) {
+        Album a = albumRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Album %d not found".formatted(id)));
+
+        if (req.title() != null && !req.title().isBlank()) a.setTitle(req.title());
+        if (req.releaseDate() != null) a.setReleaseDate(req.releaseDate());
+        if (req.coverUrl() != null) a.setCoverUrl(req.coverUrl());
+
+        Album saved = albumRepo.save(a);
+        return AlbumMapper.toResponse(saved);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        if (!albumRepo.existsById(id)) throw new NotFoundException("Album %d not found".formatted(id));
+        albumRepo.deleteById(id);
     }
 
 

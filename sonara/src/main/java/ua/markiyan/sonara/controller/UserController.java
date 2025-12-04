@@ -24,4 +24,15 @@ public class UserController {
     public UserResponse get(@PathVariable Long id) {
         return service.get(id);
     }
+
+    @PatchMapping("/{id}")
+    public UserResponse patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.UserUpdateRequest req) {
+        return service.update(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

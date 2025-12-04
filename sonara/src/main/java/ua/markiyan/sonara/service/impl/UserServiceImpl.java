@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.markiyan.sonara.dto.request.UserRequest;
+import ua.markiyan.sonara.dto.request.UserUpdateRequest;
 import ua.markiyan.sonara.dto.response.UserResponse;
 import ua.markiyan.sonara.entity.User;
 import ua.markiyan.sonara.exception.NotFoundException;
@@ -43,5 +44,25 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User %d not found".formatted(id)));
         return UserMapper.toResponse(u);
     }
-}
 
+    @Override
+    @Transactional
+    public UserResponse update(Long id, UserUpdateRequest req) {
+        User u = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("User %d not found".formatted(id)));
+
+        if (req.email() != null && !req.email().isBlank()) u.setEmail(req.email());
+        if (req.name() != null && !req.name().isBlank()) u.setName(req.name());
+        if (req.country() != null) u.setCountry(req.country());
+
+        User saved = repo.save(u);
+        return UserMapper.toResponse(saved);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        if (!repo.existsById(id)) throw new NotFoundException("User %d not found".formatted(id));
+        repo.deleteById(id);
+    }
+}

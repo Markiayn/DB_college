@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ua.markiyan.sonara.dto.request.TrackRequest;
-import ua.markiyan.sonara.dto.response.ArtistResponse;
 import ua.markiyan.sonara.dto.response.TrackResponse;
 import ua.markiyan.sonara.service.TrackService;
 
@@ -37,5 +36,16 @@ public class TrackController {
             Pageable pageable
     ) {
         return trackService.search(title, durationSec, explicitFlag, pageable);
+    }
+
+    @PatchMapping("/{id}")
+    public TrackResponse patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.TrackUpdateRequest req) {
+        return trackService.update(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        trackService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.markiyan.sonara.dto.request.ArtistRequest;
+import ua.markiyan.sonara.dto.request.ArtistUpdateRequest;
 import ua.markiyan.sonara.dto.response.ArtistResponse;
 import ua.markiyan.sonara.entity.Artist;
 import ua.markiyan.sonara.exception.NotFoundException;
@@ -50,5 +51,27 @@ public class ArtistServiceImpl implements ArtistService {
         return repo
                 .findByNameContainingIgnoreCaseAndCountryContainingIgnoreCase(n, c, pageable)
                 .map(ArtistMapper::toResponse);
+    }
+
+    @Override
+    @Transactional
+    public ArtistResponse update(Long id, ArtistUpdateRequest req) {
+        Artist a = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Artist %d not found".formatted(id)));
+
+        if (req.name() != null && !req.name().isBlank()) a.setName(req.name());
+        if (req.country() != null) a.setCountry(req.country());
+        if (req.startYear() != null) a.setStartYear(req.startYear());
+        if (req.bio() != null) a.setBio(req.bio());
+
+        Artist saved = repo.save(a);
+        return ArtistMapper.toResponse(saved);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        if (!repo.existsById(id)) throw new NotFoundException("Artist %d not found".formatted(id));
+        repo.deleteById(id);
     }
 }
