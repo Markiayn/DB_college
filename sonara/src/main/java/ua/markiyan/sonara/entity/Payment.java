@@ -47,22 +47,22 @@ public class Payment {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition =
-            "ENUM('credit_card','paypal','apple_pay','google_pay','crypto')")
-    private PaymentMethod method = PaymentMethod.credit_card;
+            "ENUM('CREDIT_CARD','PAYPAL','APPLE_PAY','GOOGLE_PAY,CRYPTO')")
+    private PaymentMethod method = PaymentMethod.CREDIT_CARD;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition =
-            "ENUM('pending','completed','failed','declined','refunded')")
-    private PaymentStatus status = PaymentStatus.pending;
+            "ENUM('PENDING','COMPLETED','FILED','DECLINED','REFUNDED')")
+    private PaymentStatus status = PaymentStatus.PENDING;
 
 
     public enum PaymentStatus {
-        pending,completed,failed,declined,refunded
+        PENDING,COMPLETED,FILED,DECLINED,REFUNDED
     }
 
     public enum PaymentMethod {
-        credit_card,paypal,apple_pay,google_pay,crypto
+        CREDIT_CARD,PAYPAL,APPLE_PAY,GOOGLE_PAY,CRYPTO
     }
 }
 

@@ -25,6 +25,14 @@ public class UserController {
         return service.get(id);
     }
 
+    @GetMapping
+    public org.springframework.data.domain.Page<UserResponse> search(
+            @RequestParam(required = false) String q,
+            org.springframework.data.domain.Pageable pageable
+    ) {
+        return service.search(q, pageable);
+    }
+
     @PatchMapping("/{id}")
     public UserResponse patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.UserUpdateRequest req) {
         return service.update(id, req);

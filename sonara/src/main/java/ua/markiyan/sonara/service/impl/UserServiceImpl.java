@@ -60,6 +60,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<UserResponse> search(String q, org.springframework.data.domain.Pageable pageable) {
+        String pattern = (q == null) ? "" : q.trim();
+        return repo.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(pattern, pattern, pageable)
+                .map(UserMapper::toResponse);
+    }
+
+    @Override
     @Transactional
     public void delete(Long id) {
         if (!repo.existsById(id)) throw new NotFoundException("User %d not found".formatted(id));

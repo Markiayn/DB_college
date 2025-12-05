@@ -34,7 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .subscription(s)
                 .amount(req.amount())
                 .currency("USD")
-                .status(Payment.PaymentStatus.completed)
+                .status(Payment.PaymentStatus.COMPLETED)
                 .build();
         p = repo.save(p);
         return toResponse(p);
