@@ -73,4 +73,14 @@ public class UserServiceImpl implements UserService {
         if (!repo.existsById(id)) throw new NotFoundException("User %d not found".formatted(id));
         repo.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponse findByEmail(String email) {
+        User u = repo.findAll().stream()
+                .filter(x -> x.getEmail() != null && x.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("User with email %s not found".formatted(email)));
+        return UserMapper.toResponse(u);
+    }
 }

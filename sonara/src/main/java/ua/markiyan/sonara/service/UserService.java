@@ -14,4 +14,6 @@ public interface UserService {
     void delete(Long id);
 
     Page<UserResponse> search(String q, Pageable pageable);
+
+    UserResponse findByEmail(String email);
 }
