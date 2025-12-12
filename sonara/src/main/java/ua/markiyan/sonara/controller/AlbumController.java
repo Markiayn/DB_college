@@ -4,6 +4,8 @@ package ua.markiyan.sonara.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import ua.markiyan.sonara.dto.request.AlbumRequest;
 import ua.markiyan.sonara.dto.response.AlbumResponse;
 
 import ua.markiyan.sonara.service.AlbumService;
+import ua.markiyan.sonara.hateoas.AlbumModelAssembler;
 
 import java.time.LocalDate;
 
@@ -20,29 +23,33 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class AlbumController {
     private final AlbumService albumService;
+    private final AlbumModelAssembler assembler;
 
     @PostMapping
-    public ResponseEntity<AlbumResponse> create(@Valid @RequestBody AlbumRequest req) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.create(req));
+    public ResponseEntity<EntityModel<AlbumResponse>> create(@Valid @RequestBody AlbumRequest req) {
+        AlbumResponse created = albumService.create(req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(assembler.toModel(created));
     }
 
     @GetMapping("/{id}")
-    public AlbumResponse get(@PathVariable Long id) {
-        return albumService.get(id);
+    public EntityModel<AlbumResponse> get(@PathVariable Long id) {
+        return assembler.toModel(albumService.get(id));
     }
 
     @GetMapping
-    public Page<AlbumResponse> search(
+    public PagedModel<EntityModel<AlbumResponse>> search(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) LocalDate releaseDate,
-            Pageable pageable // автоматично підхопить page, size, sort
+            Pageable pageable, // автоматично підхопить page, size, sort
+            PagedResourcesAssembler<AlbumResponse> pagedAssembler
     ) {
-        return albumService.search(title, releaseDate, pageable);
+        Page<AlbumResponse> page = albumService.search(title, releaseDate, pageable);
+        return pagedAssembler.toModel(page, assembler);
     }
 
     @PatchMapping("/{id}")
-    public AlbumResponse patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.AlbumUpdateRequest req) {
-        return albumService.update(id, req);
+    public EntityModel<AlbumResponse> patch(@PathVariable Long id, @RequestBody ua.markiyan.sonara.dto.request.AlbumUpdateRequest req) {
+        return assembler.toModel(albumService.update(id, req));
     }
 
     @DeleteMapping("/{id}")

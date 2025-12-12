@@ -2,13 +2,17 @@ package ua.markiyan.sonara.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.*;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.markiyan.sonara.dto.request.PlaylistItemRequest;
 import ua.markiyan.sonara.dto.response.PlaylistItemResponse;
+import ua.markiyan.sonara.hateoas.PlaylistItemModelAssembler;
 import ua.markiyan.sonara.service.PlaylistItemService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/playlists/{playlistId}/items")
@@ -16,25 +20,29 @@ import java.util.List;
 public class PlaylistItemController {
 
     private final PlaylistItemService service;
+    private final PlaylistItemModelAssembler assembler;
 
     @GetMapping
-    public List<PlaylistItemResponse> list(@PathVariable Long playlistId) {
-        return service.list(playlistId);
+    public CollectionModel<EntityModel<PlaylistItemResponse>> list(@PathVariable Long playlistId) {
+        List<PlaylistItemResponse> items = service.list(playlistId);
+        var models = items.stream().map(assembler::toModel).collect(Collectors.toList());
+        return CollectionModel.of(models, WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PlaylistItemController.class).list(playlistId)).withSelfRel());
     }
 
     @PostMapping
-    public ResponseEntity<PlaylistItemResponse> create(@PathVariable Long playlistId, @Valid @RequestBody PlaylistItemRequest req) {
-        return ResponseEntity.status(201).body(service.create(playlistId, req));
+    public ResponseEntity<EntityModel<PlaylistItemResponse>> create(@PathVariable Long playlistId, @Valid @RequestBody PlaylistItemRequest req) {
+        PlaylistItemResponse created = service.create(playlistId, req);
+        return ResponseEntity.status(201).body(assembler.toModel(created));
     }
 
     @GetMapping("/{itemId}")
-    public PlaylistItemResponse get(@PathVariable Long playlistId, @PathVariable Long itemId) {
-        return service.get(playlistId, itemId);
+    public EntityModel<PlaylistItemResponse> get(@PathVariable Long playlistId, @PathVariable Long itemId) {
+        return assembler.toModel(service.get(playlistId, itemId));
     }
 
     @PatchMapping("/{itemId}")
-    public PlaylistItemResponse patch(@PathVariable Long playlistId, @PathVariable Long itemId, @RequestBody PlaylistItemRequest req) {
-        return service.update(playlistId, itemId, req);
+    public EntityModel<PlaylistItemResponse> patch(@PathVariable Long playlistId, @PathVariable Long itemId, @RequestBody PlaylistItemRequest req) {
+        return assembler.toModel(service.update(playlistId, itemId, req));
     }
 
     @DeleteMapping("/{itemId}")
@@ -49,4 +57,3 @@ public class PlaylistItemController {
         return ResponseEntity.ok().build();
     }
 }
-
